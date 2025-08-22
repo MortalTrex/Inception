@@ -1,15 +1,52 @@
 FROM alpine:3.21
 
+# Install MariaDB
 RUN apk update && apk upgrade && \
-    apk add mariadb mariadb-client mariadb-openrc
+    apk add mariadb mariadb-client tini
 
-COPY conf/mariadb-server.cnf /etc/my.cnf.d/mariadb-server.cnf
+# Install MySQL
+RUN mkdir -p /run/mysqld /etc/my.cnf.d && \
+    chown -R mysql:mysql /run/mysqld /var/lib/mysql
+
+# COPY conf/mariadb-server.cnf /etc/my.cnf.d/mariadb-server.cnf
 
 COPY ./tools/entrypoint.sh ./
 
+EXPOSE 3306
+
 RUN chmod +x ./entrypoint.sh
 
-# ENTRYPOINT ["./entrypoint.sh"]
+ENTRYPOINT ["sh", "entrypoint.sh"]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # # srcs/requirements/mariadb/Dockerfile
 # FROM alpine:3.21
@@ -44,6 +81,9 @@ RUN chmod +x ./entrypoint.sh
 #     "user" : rabalaz, 
 #     "password" : 123,
 # } -> JSON
+
+
+
 
 
 

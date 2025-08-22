@@ -9,7 +9,10 @@ services:
     env_file: .env
     volumes:
       - mariadb_data:/var/lib/mysql
+      - ./requirements/mariadb/conf/mariadb-server.cnf:/etc/my.cnf
     networks: [inception]
+    # ports:
+    #   - 5050:3306
     command: ["sleep", "infinity"]
 
   wordpress:
@@ -48,14 +51,14 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: "~/data/wordpress"
+      device: "${PWD}/data/wordpress"
 
   mariadb_data:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: "~/data/mariadb"
+      device: "${PWD}/data/mariadb"
 
 networks:
   inception:

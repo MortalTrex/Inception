@@ -1,7 +1,5 @@
 [mysqld]
-user = rbalazs
 datadir = /var/lib/mysql
-port = 3306
 
 # Permettre les connexions extérieures (WordPress doit se connecter)
 bind-address = 0.0.0.0

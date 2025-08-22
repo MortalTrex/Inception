@@ -1,11 +1,15 @@
 COMPOSE_FILE := $(PWD)/srcs/docker-compose.yml
+DATA_DIR := $(PWD)/data
 
-all: 
+all:
+	@mkdir -p $(DATA_DIR)/mariadb
+	@mkdir -p $(DATA_DIR)/wordpress
 	@$(MAKE) build
 	@$(MAKE) create
 	@$(MAKE) up
 
 build:
+	@
 	@docker compose -f $(COMPOSE_FILE) build 
 
 create:
@@ -32,7 +36,5 @@ clean: down
 fclean: clean
 	@docker system prune -af --volumes
 	-@docker volume rm $$(docker volume ls -q) || true
-	-@docker rmi $$(docker images -q) || true
-
 
 re: fclean all
