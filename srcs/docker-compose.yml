@@ -1,49 +1,43 @@
 services:
   mariadb:
-    # build: ./requirements/mariadb
     build:
       context: ./requirements/mariadb
       dockerfile: Dockerfile
     container_name: mariadb
-    restart: unless-stopped
+    restart: always
     env_file: .env
     volumes:
       - mariadb_data:/var/lib/mysql
-      - ./requirements/mariadb/conf/mariadb-server.cnf:/etc/my.cnf
+      - ./requirements/mariadb/conf/mariadb-server.cnf:/etc/my.cnf.d/mariadb-server.cnf:ro
     networks: [inception]
-    # ports:
-    #   - 5050:3306
-    command: ["sleep", "infinity"]
 
   wordpress:
-    # build: ./requirements/wordpress
     build:
       context: ./requirements/wordpress
       dockerfile: Dockerfile
     container_name: wordpress
-    restart: unless-stopped
+    restart: always
     env_file: .env
     depends_on: [mariadb]
     volumes:
       - wordpress_data:/var/www/html
     networks: [inception]
-    command: ["sleep", "infinity"]
 
   nginx:
-    # build: ./requirements/nginx
     build:
       context: ./requirements/nginx
       dockerfile: Dockerfile
     container_name: nginx
-    restart: unless-stopped
-    env_file: .env
+    restart: always
     depends_on: [wordpress]
     ports:
-      - "${HTTPS_PORT}:443"
+      - "443:443"
     volumes:
       - wordpress_data:/var/www/html:ro
+      - ./requirements/nginx/conf/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./requirements/nginx/conf/ssl:/etc/nginx/ssl:ro
     networks: [inception]
-    command: ["sleep", "infinity"]
+
 
 volumes:
   wordpress_data:
@@ -51,15 +45,15 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: "${PWD}/data/wordpress"
+      device: "/home/vboxuser/data/wordpress"
 
   mariadb_data:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: "${PWD}/data/mariadb"
+      device: "/home/vboxuser/data/mariadb"
 
 networks:
   inception:
-    name: inception
+    driver: bridge

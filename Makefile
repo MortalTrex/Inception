@@ -1,5 +1,5 @@
 COMPOSE_FILE := $(PWD)/srcs/docker-compose.yml
-DATA_DIR := $(PWD)/data
+DATA_DIR := /home/vboxuser/data
 
 all:
 	@mkdir -p $(DATA_DIR)/mariadb
