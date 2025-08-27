@@ -16,7 +16,7 @@ create:
 	@docker compose -f $(COMPOSE_FILE) create
 
 up:
-	@docker compose -f $(COMPOSE_FILE) up -d
+	@docker compose -f $(COMPOSE_FILE) up --build 
 
 down:
 	@docker compose -f $(COMPOSE_FILE) down

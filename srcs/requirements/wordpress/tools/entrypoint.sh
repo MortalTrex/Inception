@@ -11,4 +11,8 @@ if [ ! -f wp-config.php ]; then
   sed -i "s/localhost/${WORDPRESS_DB_HOST}/" wp-config.php
 fi
 
+if ! wp core is-installed --path=/var/www/html --allow-root; then
+  wp core install --url=rbalazs.42.fr --title="${WP_TITLE}" --admin_user="${WP_ADMIN_USER}" --admin_password="${WP_ADMIN_PASSWORD}" --admin_email="${WP_ADMIN_EMAIL}" --path=/var/www/html --allow-root
+fi
+
 exec php-fpm83 -F
