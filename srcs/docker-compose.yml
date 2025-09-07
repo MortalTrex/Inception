@@ -9,6 +9,12 @@ services:
     volumes:
       - mariadb_data:/var/lib/mysql
       - ./requirements/mariadb/conf/mariadb-server.cnf:/etc/my.cnf.d/mariadb-server.cnf:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mariadb-admin ping -u=${MYSQL_USER}"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+
     networks: [inception]
 
   wordpress:
@@ -18,7 +24,9 @@ services:
     container_name: wordpress
     restart: always
     env_file: .env
-    depends_on: [mariadb]
+    depends_on:
+      mariadb:
+        condition: service_healthy
     volumes:
       - wordpress_data:/var/www/html
     networks: [inception]

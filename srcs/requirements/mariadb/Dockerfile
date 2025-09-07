@@ -1,10 +1,8 @@
 FROM alpine:3.21
 
-# Install MariaDB
 RUN apk update && apk upgrade && \
-    apk add mariadb mariadb-client tini
+    apk add mariadb mariadb-client
 
-# Install MySQL
 RUN mkdir -p /run/mysqld /etc/my.cnf.d && \
     chown -R mysql:mysql /run/mysqld /var/lib/mysql
 

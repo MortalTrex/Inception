@@ -3,13 +3,7 @@ set -e
 
 cd /var/www/html
 
-echo "Waiting for MariaDB to be ready..."
-
-until mariadb-admin ping -h"$WORDPRESS_DB_HOST" -u"$WORDPRESS_DB_USER" -p"$WORDPRESS_DB_PASSWORD" >/dev/null 2>&1; do
-  sleep 1
-done
-
-echo "MariaDB is ready."
+echo "Setting up WordPress configuration..."
 
 if [ ! -f wp-config.php ]; then
   cp wp-config-sample.php wp-config.php
@@ -21,10 +15,22 @@ fi
 
 echo "Starting WordPress setup..."
 
-if ! wp core is-installed --path=/var/www/html --allow-root; then
-  wp core install --url=${WP_URL} --title="${WP_TITLE}" --admin_user="${WP_ADMIN_USER}" --admin_password="${WP_ADMIN_PASSWORD}" --admin_email="${WP_ADMIN_EMAIL}" --path=/var/www/html --allow-root
+
+if ! wp user get "${WP_ADMIN_USER}" --field=ID --allow-root >/dev/null 2>&1; then
+  wp user create "${WP_ADMIN_USER}" "${WP_ADMIN_EMAIL}" \
+    --user_pass="${WP_ADMIN_PASSWORD}" \
+    --role=administrator \
+    --allow-root
+else
+  wp user update "${WP_ADMIN_USER}" --role=administrator --allow-root
 fi
 
-echo "Starting PHP-FPM..."
+
+if ! wp user get "${WP_USER}" --field=ID --allow-root >/dev/null 2>&1; then
+  wp user create "${WP_USER}" "${WP_USER_EMAIL}" \
+    --user_pass="${WP_USER_PASSWORD}" --role=author --allow-root
+fi
+
+echo "WordPress setup completed."
 
 exec php-fpm83 -F

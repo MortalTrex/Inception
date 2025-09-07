@@ -36,8 +36,7 @@ logs:
 clean: down
 	@docker system prune -af --volumes
 
-fclean: clean
+fclean: clean downv
 	@docker system prune -af --volumes
-	-@docker volume rm $$(docker volume ls -q) || true
 
 re: fclean all
