@@ -1,5 +1,5 @@
 COMPOSE_FILE := $(PWD)/srcs/docker-compose.yml
-DATA_DIR := /home/vboxuser/data
+DATA_DIR := $(HOME)/data
 
 all:
 	@mkdir -p $(DATA_DIR)/mariadb
@@ -20,6 +20,9 @@ up:
 
 down:
 	@docker compose -f $(COMPOSE_FILE) down
+
+downv:
+	@docker compose -f $(COMPOSE_FILE) down -v
 
 stop:
 	@docker compose -f $(COMPOSE_FILE) stop

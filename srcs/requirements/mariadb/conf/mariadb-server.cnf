@@ -4,6 +4,7 @@ datadir = /var/lib/mysql
 # Permettre les connexions extérieures (WordPress doit se connecter)
 bind-address = 0.0.0.0
 
+
 # Charset conseillé pour WordPress
 character-set-server = utf8mb4
 collation-server = utf8mb4_general_ci

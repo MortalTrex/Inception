@@ -4,7 +4,7 @@ set -e
 INIT_ARG=""
 
 if [ ! -d /var/lib/mysql/mysql ]; then
-  mariadb-install-db --user=mysql --datadir=/var/lib/mysql >/dev/null
+  mariadb-install-db --user=mysql --datadir=/var/lib/mysql --skip-test-db >/dev/null
   cat >/tmp/init.sql <<EOF
 ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';
 CREATE DATABASE IF NOT EXISTS \`${MYSQL_DATABASE}\`;

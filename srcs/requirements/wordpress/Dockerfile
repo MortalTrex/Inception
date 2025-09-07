@@ -1,7 +1,8 @@
 FROM alpine:3.21
 
 RUN apk update && apk upgrade && \
-    apk add --no-cache curl tar php83 php83-fpm php83-mysqli php83-phar php83-mbstring
+    apk add --no-cache curl tar php83 php83-fpm php83-mysqli php83-phar php83-mbstring \
+    mariadb mariadb-client
 
 RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
     chmod +x wp-cli.phar && mv wp-cli.phar /usr/local/bin/wp
