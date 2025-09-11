@@ -10,9 +10,11 @@ services:
       - mariadb_data:/var/lib/mysql
       - ./requirements/mariadb/conf/mariadb-server.cnf:/etc/my.cnf.d/mariadb-server.cnf:ro
     healthcheck:
-      test: ["CMD-SHELL", "mariadb-admin ping -u=${MYSQL_USER}"]
-      interval: 5s
-      timeout: 3s
+      test: ["CMD-SHELL", "mysqladmin ping -h mariadb -u $${MYSQL_USER} -p$${MYSQL_PASSWORD} --silent"]
+      # test: ["CMD-SHELL", "mariadb-admin ping -u=${MYSQL_USER}"]
+      # test: ["CMD", "mysqladmin", "ping", "--silent"]
+      interval: 7s
+      timeout: 7s
       retries: 30
 
     networks: [inception]
@@ -39,7 +41,6 @@ services:
     restart: always
     depends_on: [wordpress]
     ports:
-      - "80:80"
       - "443:443"
     volumes:
       - wordpress_data:/var/www/html:ro
