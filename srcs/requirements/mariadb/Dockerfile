@@ -1,7 +1,6 @@
 FROM alpine:3.21
 
-RUN apk update && apk upgrade && \
-    apk add mariadb mariadb-client
+RUN apk add --no-cache mariadb mariadb-client
 
 RUN mkdir -p /run/mysqld /etc/my.cnf.d && \
     chown -R mysql:mysql /run/mysqld /var/lib/mysql
@@ -11,4 +10,4 @@ RUN chmod +x ./entrypoint.sh
 
 EXPOSE 3306
 
-ENTRYPOINT ["entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
