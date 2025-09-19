@@ -2,17 +2,17 @@
 
 cd /var/www/html/wordpress
 
-wp-cli.phar cli update  --yes \
-						--allow-root
-
 if [ ! -f wp-config.php ]; then
 	wp-cli.phar config create	--allow-root \
-				--dbname=$MYSQL_DATABASE \
+				--dbname=$DB_NAME \
 				--url=https://${WP_URL} \
-				--dbuser=$MYSQL_USER \
-				--dbpass=$MYSQL_PASSWORD \
-				--dbhost=$WORDPRESS_DB_HOST ;
+				--dbuser=$DB_USER \
+				--dbpass=$DB_PASSWORD \
+				--dbhost=$DB_HOST ;
 fi
+
+echo "if (PHP_SAPI==='cli' && !isset(\$_SERVER['HTTP_HOST'])) \$_SERVER['HTTP_HOST']='localhost';" >> wp-config.php
+
 
 if ! wp-cli.phar core is-installed --allow-root; then
 	wp-cli.phar core install	--allow-root \
@@ -39,9 +39,10 @@ if ! wp-cli.phar theme is-active twentytwentyfour --allow-root; then
 	wp-cli.phar theme activate twentytwentyfour --allow-root
 fi
 
+
 if [ ! -d /run/php ]; then
 	mkdir /run/php;
 fi
 
-echo "Wordpress is running !"
+echo -e "\033[0;32mWordpress finished to set up\033[0m"
 exec /usr/sbin/php-fpm83 -F -R

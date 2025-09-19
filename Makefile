@@ -33,11 +33,14 @@ start:
 logs:
 	@docker compose -f $(COMPOSE_FILE) logs -f
 
-clean: down
-	sudo rm -rf $(DATA_DIR)/mariadb
-	sudo rm -rf $(DATA_DIR)/wordpress
 
-fclean: clean downv
+clean: down
+
+fclean: downv
 	@docker system prune -af --volumes
+
+destroy: fclean
+	@sudo rm -rf $(DATA_DIR)/mariadb
+	@sudo rm -rf $(DATA_DIR)/wordpress
 
 re: fclean all

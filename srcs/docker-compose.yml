@@ -10,7 +10,7 @@ services:
       - mariadb_data:/var/lib/mysql
       - ./requirements/mariadb/conf/mariadb-server.cnf:/etc/my.cnf.d/mariadb-server.cnf:ro
     healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h mariadb -u $${MYSQL_USER} -p$${MYSQL_PASSWORD} --silent"]
+      test: ["CMD-SHELL", "mysqladmin ping -h mariadb -u $${DB_USER} -p$${DB_PASSWORD} --silent"]
       interval: 7s
       timeout: 7s
       retries: 30

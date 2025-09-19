@@ -1,6 +1,6 @@
 FROM alpine:3.21
 
-RUN apk add --no-cache mariadb mariadb-client
+RUN apk upgrade && apk update && apk add --no-cache mariadb mariadb-client
 
 RUN mkdir -p /run/mysqld /etc/my.cnf.d && \
     chown -R mysql:mysql /run/mysqld /var/lib/mysql

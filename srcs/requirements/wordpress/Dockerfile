@@ -19,4 +19,5 @@ RUN chmod +x ./entrypoint.sh && \
     ln -sf /usr/bin/php83 /usr/bin/php
 
 WORKDIR /var/www/html
+EXPOSE 9000
 ENTRYPOINT ["/entrypoint.sh"]
