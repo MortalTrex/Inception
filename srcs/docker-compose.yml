@@ -11,8 +11,8 @@ services:
       - ./requirements/mariadb/conf/mariadb-server.cnf:/etc/my.cnf.d/mariadb-server.cnf:ro
     healthcheck:
       test: ["CMD-SHELL", "mysqladmin ping -h mariadb -u $${DB_USER} -p$${DB_PASSWORD} --silent"]
-      interval: 7s
-      timeout: 7s
+      interval: 3s
+      timeout: 3s
       retries: 30
 
     networks: [inception]
